@@ -4,6 +4,13 @@ package model;
 
 option go_package = "../model";
 
+import "utils.proto";
+
+service Users {
+  rpc Register(User) returns(Empty);
+  rpc List(Empty) returns(UserList);
+}
+
 enum UserGender {
   UNDEFINED = 0;
   MALE = 1;
