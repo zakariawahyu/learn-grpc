@@ -17,7 +17,7 @@ type GaragesServer struct {
 	model.UnimplementedGaragesServer
 }
 
-func (g *GaragesServer) Add(ctx context.Context, param *model.GarageAndUserId) (*model.Empty, error) {
+func (g *GaragesServer) Add(ctx context.Context, param *model.GarageAndUserId) (*model.Garage, error) {
 	userId := param.UserId
 	garage := param.Garage
 
@@ -30,7 +30,7 @@ func (g *GaragesServer) Add(ctx context.Context, param *model.GarageAndUserId) (
 
 	log.Println("Adding garage", garage.String(), "for user", userId)
 
-	return new(model.Empty), nil
+	return localStorage.List[userId].List[len(localStorage.List[userId].List)-1], nil
 }
 
 func (g *GaragesServer) List(ctx context.Context, param *model.GarageUserId) (*model.GarageList, error) {

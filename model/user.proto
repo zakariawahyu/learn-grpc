@@ -7,7 +7,7 @@ option go_package = "../model";
 import "utils.proto";
 
 service Users {
-  rpc Register(User) returns(Empty);
+  rpc Register(User) returns(User);
   rpc List(Empty) returns(UserList);
 }
 

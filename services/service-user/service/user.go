@@ -17,12 +17,12 @@ type UsersServer struct {
 	model.UnimplementedUsersServer
 }
 
-func (u *UsersServer) Register(ctx context.Context, param *model.User) (*model.Empty, error) {
+func (u *UsersServer) Register(ctx context.Context, param *model.User) (*model.User, error) {
 	localStorage.List = append(localStorage.List, param)
 
 	log.Println("Registering User : ", param.String())
 
-	return new(model.Empty), nil
+	return localStorage.List[len(localStorage.List)-1], nil
 }
 
 func (u *UsersServer) List(ctx context.Context, void *model.Empty) (*model.UserList, error) {

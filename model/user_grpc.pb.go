@@ -27,7 +27,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UsersClient interface {
-	Register(ctx context.Context, in *User, opts ...grpc.CallOption) (*Empty, error)
+	Register(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error)
 	List(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*UserList, error)
 }
 
@@ -39,8 +39,8 @@ func NewUsersClient(cc grpc.ClientConnInterface) UsersClient {
 	return &usersClient{cc}
 }
 
-func (c *usersClient) Register(ctx context.Context, in *User, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *usersClient) Register(ctx context.Context, in *User, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
 	err := c.cc.Invoke(ctx, Users_Register_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ func (c *usersClient) List(ctx context.Context, in *Empty, opts ...grpc.CallOpti
 // All implementations must embed UnimplementedUsersServer
 // for forward compatibility
 type UsersServer interface {
-	Register(context.Context, *User) (*Empty, error)
+	Register(context.Context, *User) (*User, error)
 	List(context.Context, *Empty) (*UserList, error)
 	mustEmbedUnimplementedUsersServer()
 }
@@ -70,7 +70,7 @@ type UsersServer interface {
 type UnimplementedUsersServer struct {
 }
 
-func (UnimplementedUsersServer) Register(context.Context, *User) (*Empty, error) {
+func (UnimplementedUsersServer) Register(context.Context, *User) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
 }
 func (UnimplementedUsersServer) List(context.Context, *Empty) (*UserList, error) {

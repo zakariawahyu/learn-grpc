@@ -28,7 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GaragesClient interface {
 	List(ctx context.Context, in *GarageUserId, opts ...grpc.CallOption) (*GarageList, error)
-	Add(ctx context.Context, in *GarageAndUserId, opts ...grpc.CallOption) (*Empty, error)
+	Add(ctx context.Context, in *GarageAndUserId, opts ...grpc.CallOption) (*Garage, error)
 }
 
 type garagesClient struct {
@@ -48,8 +48,8 @@ func (c *garagesClient) List(ctx context.Context, in *GarageUserId, opts ...grpc
 	return out, nil
 }
 
-func (c *garagesClient) Add(ctx context.Context, in *GarageAndUserId, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *garagesClient) Add(ctx context.Context, in *GarageAndUserId, opts ...grpc.CallOption) (*Garage, error) {
+	out := new(Garage)
 	err := c.cc.Invoke(ctx, Garages_Add_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (c *garagesClient) Add(ctx context.Context, in *GarageAndUserId, opts ...gr
 // for forward compatibility
 type GaragesServer interface {
 	List(context.Context, *GarageUserId) (*GarageList, error)
-	Add(context.Context, *GarageAndUserId) (*Empty, error)
+	Add(context.Context, *GarageAndUserId) (*Garage, error)
 	mustEmbedUnimplementedGaragesServer()
 }
 
@@ -73,7 +73,7 @@ type UnimplementedGaragesServer struct {
 func (UnimplementedGaragesServer) List(context.Context, *GarageUserId) (*GarageList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
-func (UnimplementedGaragesServer) Add(context.Context, *GarageAndUserId) (*Empty, error) {
+func (UnimplementedGaragesServer) Add(context.Context, *GarageAndUserId) (*Garage, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
 func (UnimplementedGaragesServer) mustEmbedUnimplementedGaragesServer() {}

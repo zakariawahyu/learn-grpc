@@ -4,11 +4,9 @@ package model;
 
 option go_package = "../model";
 
-import "utils.proto";
-
 service Garages {
   rpc List(GarageUserId) returns (GarageList);
-  rpc Add(GarageAndUserId) returns (Empty);
+  rpc Add(GarageAndUserId) returns (Garage);
 }
 
 message GarageCoordinate {
