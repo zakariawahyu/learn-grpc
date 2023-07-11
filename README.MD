@@ -1,2 +1,3 @@
 -  protoc --go_out=. *.proto => untuk generate file proto
 -  protoc --go-grpc_out=. *.proto => untuk generate file proto service
+- app_key = 0723
