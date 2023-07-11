@@ -2,6 +2,9 @@ package service
 
 import (
 	"context"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"learn-grpc/model"
 	"log"
 )
@@ -27,6 +30,18 @@ func (g *GaragesServer) Add(ctx context.Context, param *model.GarageAndUserId) (
 	}
 
 	localStorage.List[userId].List = append(localStorage.List[userId].List, garage)
+
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return nil, status.Error(codes.DataLoss, "Error metadata")
+	}
+
+	if v, ok := md["timestamp"]; ok {
+		log.Println("Meta Data Timestamp")
+		for i, val := range v {
+			log.Println("%d - %s", i, val)
+		}
+	}
 
 	log.Println("Adding garage", garage.String(), "for user", userId)
 

@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"learn-grpc/common/config"
 	"learn-grpc/model"
 	"log"
+	"time"
 )
 
 func serviceGarage() model.GaragesClient {
@@ -64,11 +66,13 @@ func main() {
 	}
 
 	user := serviceUser()
+	metTimestap := metadata.Pairs("timestamp", time.Now().Format(time.StampNano))
+	ctxMeta := metadata.NewOutgoingContext(context.Background(), metTimestap)
 	fmt.Println("\n", "===========> user test")
 	// register user1
-	user.Register(context.Background(), &user1)
+	user.Register(ctxMeta, &user1)
 	// register user2
-	user.Register(context.Background(), &user2)
+	user.Register(ctxMeta, &user2)
 
 	// show all user register
 	resUser, err := user.List(context.Background(), new(model.Empty))
@@ -82,17 +86,17 @@ func main() {
 	garage := serviceGarage()
 	fmt.Println("\n", "===========> garage test")
 	// add garage1 to user1
-	garage.Add(context.Background(), &model.GarageAndUserId{
+	garage.Add(ctxMeta, &model.GarageAndUserId{
 		UserId: user1.Id,
 		Garage: &garage1,
 	})
 	// add garage2 to user1
-	garage.Add(context.Background(), &model.GarageAndUserId{
+	garage.Add(ctxMeta, &model.GarageAndUserId{
 		UserId: user1.Id,
 		Garage: &garage2,
 	})
 	// add garage2 to user2
-	garage.Add(context.Background(), &model.GarageAndUserId{
+	garage.Add(ctxMeta, &model.GarageAndUserId{
 		UserId: user2.Id,
 		Garage: &garage2,
 	})
